@@ -392,7 +392,7 @@ def main():
             for param in model_D.parameters():
                 param.requires_grad = False
             # train with source
-            images, labels, path = trainloader_iter.next()
+            images, labels, path = next(trainloader_iter)
             images = Variable(images).cuda(args.gpu)
             labels = Variable(labels).cuda(args.gpu)
 
@@ -415,7 +415,7 @@ def main():
             loss_seg_value += loss.data.cpu().numpy() / args.iter_size
 
             # train with target
-            images, labels, _ = targetloader_iter.next()
+            images, labels, _ = next(targetloader_iter)
             images = Variable(images).cuda(args.gpu)
             memory, pred_target1, pred_target2 = model(images, 'TARGET', labels, lr_backbone, i_iter)
             D_out = model_D(F.softmax(pred_target1))
