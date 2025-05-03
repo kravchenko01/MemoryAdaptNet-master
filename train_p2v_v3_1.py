@@ -25,15 +25,15 @@ ITER_SIZE = 1
 NUM_WORKERS = 0
 
 # это то что в ISPRSDataset придет в images_dir, masks_dir,
-IMAGE_DIRECTORY = "/dataset/potsdam/train_image_512"
-LABEL_DIRECTORY = "/dataset/potsdam/train_label_512"
+IMAGE_DIRECTORY = "dataset/potsdam/train_image_512"
+LABEL_DIRECTORY = "dataset/potsdam/train_label_512"
 # IMAGE_DIRECTORY = "../../dataset/potsdam/train_img_512_1_ori"
 # LABEL_DIRECTORY = "../../dataset/potsdam/train_lab_512_ori"
 
-IMAGE_DIRECTORY_TARGET = "/dataset/mpia/train_image_512"
-LABEL_DIRECTORY_TARGET = "/dataset/mpia/train_label_512"
-VAL_IMAGE_DIRECTORY_TARGET = "/dataset/mpia/val_image_512"
-VAL_LABEL_DIRECTORY_TARGET = "/dataset/mpia/val_label_512"
+IMAGE_DIRECTORY_TARGET = "dataset/mpia/train_image_512"
+LABEL_DIRECTORY_TARGET = "dataset/mpia/train_label_512"
+VAL_IMAGE_DIRECTORY_TARGET = "dataset/mpia/val_image_512"
+VAL_LABEL_DIRECTORY_TARGET = "dataset/mpia/val_label_512"
 # IMAGE_DIRECTORY_TARGET = "../../dataset/vaihingen/train_img_512"
 # LABEL_DIRECTORY_TARGET = "../../dataset/vaihingen/train_lab_512"
 # VAL_IMAGE_DIRECTORY_TARGET = "../../dataset/vaihingen/val_img_512"
