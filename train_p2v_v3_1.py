@@ -24,20 +24,27 @@ BATCH_SIZE = 2
 ITER_SIZE = 1
 NUM_WORKERS = 0
 
-IMAGE_DIRECTORY = "../../dataset/potsdam/train_img_512_1_ori"
-LABEL_DIRECTORY = "../../dataset/potsdam/train_lab_512_ori"
+# это то что в ISPRSDataset придет в images_dir, masks_dir,
+IMAGE_DIRECTORY = "/dataset/potsdam/train_image_512"
+LABEL_DIRECTORY = "/dataset/potsdam/train_label_512"
+# IMAGE_DIRECTORY = "../../dataset/potsdam/train_img_512_1_ori"
+# LABEL_DIRECTORY = "../../dataset/potsdam/train_lab_512_ori"
 
-IMAGE_DIRECTORY_TARGET = "../../dataset/vaihingen/train_img_512"
-LABEL_DIRECTORY_TARGET = "../../dataset/vaihingen/train_lab_512"
-VAL_IMAGE_DIRECTORY_TARGET = "../../dataset/vaihingen/val_img_512"
-VAL_LABEL_DIRECTORY_TARGET = "../../dataset/vaihingen/val_lab_512"
+IMAGE_DIRECTORY_TARGET = "/dataset/mpia/train_image_512"
+LABEL_DIRECTORY_TARGET = "/dataset/mpia/train_label_512"
+VAL_IMAGE_DIRECTORY_TARGET = "/dataset/mpia/val_image_512"
+VAL_LABEL_DIRECTORY_TARGET = "/dataset/mpia/val_label_512"
+# IMAGE_DIRECTORY_TARGET = "../../dataset/vaihingen/train_img_512"
+# LABEL_DIRECTORY_TARGET = "../../dataset/vaihingen/train_lab_512"
+# VAL_IMAGE_DIRECTORY_TARGET = "../../dataset/vaihingen/val_img_512"
+# VAL_LABEL_DIRECTORY_TARGET = "../../dataset/vaihingen/val_lab_512"
 
-IGNORE_LABEL = 255
+# IGNORE_LABEL = 255
 INPUT_SIZE = '512,512'
 INPUT_SIZE_TARGET = '512,512'
 LEARNING_RATE = 2.5e-4
 MOMENTUM = 0.9
-NUM_CLASSES = 6
+NUM_CLASSES = 1 #6
 NUM_STEPS = 250000
 NUM_STEPS_STOP = 150000  # early stopping
 POWER = 0.9
@@ -93,8 +100,8 @@ def get_arguments():
     parser.add_argument("--val-target-label-dir", type=str, default=VAL_LABEL_DIRECTORY_TARGET,
                         help="Path to the directory containing the source dataset.")
 
-    parser.add_argument("--ignore-label", type=int, default=IGNORE_LABEL,
-                        help="The index of the label to ignore during the training.")
+    # parser.add_argument("--ignore-label", type=int, default=IGNORE_LABEL,
+    #                     help="The index of the label to ignore during the training.")
     parser.add_argument("--input-size", type=str, default=INPUT_SIZE,
                         help="Comma-separated string with height and width of source images.")
 

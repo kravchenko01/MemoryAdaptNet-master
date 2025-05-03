@@ -2,3 +2,8 @@
 *.pth
 *.png
 *.jpg
+
+dataset/potsdam
+dataset/mpia
+
+*.DS_STORE
