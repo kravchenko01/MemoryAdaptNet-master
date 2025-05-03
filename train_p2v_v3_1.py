@@ -44,9 +44,9 @@ INPUT_SIZE = '512,512'
 INPUT_SIZE_TARGET = '512,512'
 LEARNING_RATE = 2.5e-4
 MOMENTUM = 0.9
-NUM_CLASSES = 2 #6
-NUM_STEPS = 250000
-NUM_STEPS_STOP = 150000  # early stopping
+NUM_CLASSES = 2 # 6
+NUM_STEPS = 70000 # 250000
+NUM_STEPS_STOP = 70000 # 150000  # early stopping
 POWER = 0.9
 RANDOM_SEED = 1234
 RESTORE_FROM = 'http://vllab.ucmerced.edu/ytsai/CVPR18/DeepLab_resnet_pretrained_init-f81d91e8.pth'
@@ -466,9 +466,10 @@ def main():
 
         if i_iter >= args.num_steps_stop - 1:
             print('save model ...')
-            torch.save(model.state_dict(), osp.join(args.snapshot_dir, 'p2v_' + str(args.num_steps_stop) + '.pth'))
+            torch.save(model.state_dict(), osp.join(args.snapshot_dir, 'p2v_' + str(args.num_steps_stop) + '_stop.pth'))
             torch.save(model_D.state_dict(),
-                       osp.join(args.snapshot_dir, 'p2v_' + str(args.num_steps_stop) + '_D.pth'))
+                       osp.join(args.snapshot_dir, 'p2v_' + str(args.num_steps_stop) + '_D_stop.pth'))
+            torch.save(memory, osp.join(args.snapshot_dir, 'p2v_' + str(best_score) + '_m_stop.pth'))
             break
 
         # val
@@ -486,10 +487,10 @@ def main():
 
             if val_score2['Mean IoU'] > best_score:  # save best model
                 best_score = val_score2['Mean IoU']
-                torch.save(model.state_dict(), osp.join(args.snapshot_dir, 'p2v_' + str(best_score) + '.pth'))
+                torch.save(model.state_dict(), osp.join(args.snapshot_dir, 'p2v.pth'))
                 torch.save(model_D.state_dict(),
-                           osp.join(args.snapshot_dir, 'p2v_' + str(best_score) + '_D.pth'))
-                torch.save(memory, osp.join(args.snapshot_dir, 'p2v_' + str(best_score) + '_m.pth'))
+                           osp.join(args.snapshot_dir, 'p2v_D.pth'))
+                torch.save(memory, osp.join(args.snapshot_dir, 'p2v_m.pth'))
                 fh = open(acc_path, 'a')
                 fh.write('iter:' + str(i_iter))
                 fh.write(metrics1.to_str(val_score1))
