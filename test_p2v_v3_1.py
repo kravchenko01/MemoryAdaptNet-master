@@ -134,6 +134,9 @@ def main():
 
             memory, outputs1, outputs2 = model(images, 'TEST', labels, 0, 0)
 
+            a, b = outputs1.detach().max(dim=1)[1].cpu().numpy(), outputs2.detach().max(dim=1)[1].cpu().numpy()
+            print(np.unique(a), np.unique(b))
+
             for b in range(args.batch_size):
                 label_t = torch.unsqueeze(labels[b, :, :], 0)
                 output_t = outputs2[b, :, :, :]
