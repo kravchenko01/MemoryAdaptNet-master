@@ -31,15 +31,26 @@ ITER_SIZE = 1
 NUM_WORKERS = 0
 
 # это то что в ISPRSDataset придет в images_dir, masks_dir,
-IMAGE_DIRECTORY = "dataset/potsdam/train_image_512"
-LABEL_DIRECTORY = "dataset/potsdam/train_label_512"
+IMAGE_DIRECTORY = "dataset/potsdam2/train_image_512"
+LABEL_DIRECTORY = "dataset/potsdam2/train_label_512"
+
+# IMAGE_DIRECTORY = "dataset/potsdam/train_image_512"
+# LABEL_DIRECTORY = "dataset/potsdam/train_label_512"
+
 # IMAGE_DIRECTORY = "../../dataset/potsdam/train_img_512_1_ori"
 # LABEL_DIRECTORY = "../../dataset/potsdam/train_lab_512_ori"
 
-IMAGE_DIRECTORY_TARGET = "dataset/mpia/train_image_512"
-LABEL_DIRECTORY_TARGET = "dataset/mpia/train_label_512"
-VAL_IMAGE_DIRECTORY_TARGET = "dataset/mpia/val_image_512"
-VAL_LABEL_DIRECTORY_TARGET = "dataset/mpia/val_label_512"
+
+IMAGE_DIRECTORY_TARGET = "dataset/our/train_image_512"
+LABEL_DIRECTORY_TARGET = "dataset/our/train_label_512"
+VAL_IMAGE_DIRECTORY_TARGET = "dataset/our/val_image_512"
+VAL_LABEL_DIRECTORY_TARGET = "dataset/our/val_label_512"
+
+# IMAGE_DIRECTORY_TARGET = "dataset/mpia/train_image_512"
+# LABEL_DIRECTORY_TARGET = "dataset/mpia/train_label_512"
+# VAL_IMAGE_DIRECTORY_TARGET = "dataset/mpia/val_image_512"
+# VAL_LABEL_DIRECTORY_TARGET = "dataset/mpia/val_label_512"
+
 # IMAGE_DIRECTORY_TARGET = "../../dataset/vaihingen/train_img_512"
 # LABEL_DIRECTORY_TARGET = "../../dataset/vaihingen/train_lab_512"
 # VAL_IMAGE_DIRECTORY_TARGET = "../../dataset/vaihingen/val_img_512"
@@ -52,9 +63,9 @@ LEARNING_RATE = 2.5e-4
 MOMENTUM = 0.9
 NUM_CLASSES = 2 # 6
 
-NUM_STEPS = 10300 # 250000
-NUM_STEPS_STOP = 10300 # 150000  # early stopping
-NUM_STEPS_TO_SAVE_IMG = 8500
+NUM_STEPS = 7000 # 250000
+NUM_STEPS_STOP = 7000 # 150000  # early stopping
+NUM_STEPS_TO_SAVE_IMG = 5000
 UPDATE_DOMAIN_FEATURE = 3000
 
 # NUM_STEPS = 4000 # 250000
@@ -367,7 +378,7 @@ def main():
         augmentation=get_affine_augmentation()
     )
     trainloader = data.DataLoader(train_dataset, batch_size=args.batch_size, shuffle=True,
-                                  num_workers=args.num_workers, pin_memory=True)
+                                  num_workers=args.num_workers, pin_memory=True, drop_last=True)
     trainloader_iter = iter(trainloader)
 
     target_dataset = ISPRSDataset(
@@ -377,7 +388,7 @@ def main():
         augmentation=get_affine_augmentation()
     )
     targetloader = data.DataLoader(target_dataset, batch_size=args.batch_size, shuffle=True,
-                                   num_workers=args.num_workers, pin_memory=True)
+                                   num_workers=args.num_workers, pin_memory=True, drop_last=True)
     targetloader_iter = iter(targetloader)
 
     val_target_dataset = ISPRSDataset_val(
@@ -415,6 +426,8 @@ def main():
     loss_seg_value = 0
     loss_adv_target_value = 0
     loss_D_value = 0
+
+    not_saved = True
 
     for i_iter in range(args.num_steps):
 
@@ -508,6 +521,8 @@ def main():
             torch.save(model_D.state_dict(),
                        osp.join(args.snapshot_dir, 'p2v_' + str(args.num_steps_stop) + '_D_stop.pth'))
             torch.save(memory, osp.join(args.snapshot_dir, 'p2v_' + str(best_score) + '_m_stop.pth'))
+
+            save_images(args, val_targetloader, model, i_iter, lr_backbone)
             break
 
         # val
@@ -536,7 +551,12 @@ def main():
                 fh.close()
 
                 if i_iter > NUM_STEPS_TO_SAVE_IMG:
+                    not_saved = False
                     save_images(args, val_targetloader, model, i_iter, lr_backbone)
+            
+            if i_iter > NUM_STEPS_TO_SAVE_IMG and not_saved:
+                not_saved = False
+                save_images(args, val_targetloader, model, i_iter, lr_backbone)
                     
 
         if i_iter % args.save_pred_every == 0 and i_iter != 0:
