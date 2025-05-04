@@ -101,19 +101,26 @@ def labelcolormap(N):
 #                     (107,142, 35), (152,251,152), ( 70,130,180), (220, 20, 60), (255,  0,  0), (  0,  0,142), (  0,  0, 70),
 #                     (  0, 60,100), (  0,  0, 90), (  0,  0,110), (  0, 80,100), (  0,  0,230), (119, 11, 32), (  0,  0,142)], 
 #                     dtype=np.uint8)
-    if N == 6:
-        cmap = np.array([(255, 255, 255)
-                         # 0=Impervious surfaces
-                            , (255, 0, 0)
+    # if N == 6:
+    #     cmap = np.array([(255, 255, 255)
+    #                      # 0=Impervious surfaces
+    #                         , (255, 0, 0)
+    #                      # 1=building
+    #                         , (255, 255, 0)
+    #                      # 2=Low vegetation
+    #                         , (0, 255, 0)
+    #                      # 3=Tree
+    #                         , (0, 255, 255)
+    #                      # 4=car
+    #                         , (0, 0, 255)],
+    #                     # Clutter / background
+    #                     dtype=np.uint8)
+    if N == 2:
+        cmap = np.array([(0, 0, 0)
+                         # 0=background
+                            , (255, 255, 255)
                          # 1=building
-                            , (255, 255, 0)
-                         # 2=Low vegetation
-                            , (0, 255, 0)
-                         # 3=Tree
-                            , (0, 255, 255)
-                         # 4=car
-                            , (0, 0, 255)],
-                        # Clutter / background
+                            , (255, 255, 0)],
                         dtype=np.uint8)
     return cmap
 
