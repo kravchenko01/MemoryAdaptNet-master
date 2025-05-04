@@ -100,13 +100,13 @@ def main():
         'deeplabv3plus_mobilenet': network.deeplabv3plus_mobilenet
     }
     save_path_m = './snapshots_p2v_v3_1/p2v_40000_m.pth'
-    memory = torch.load(save_path_m)
+    memory = torch.load(save_path_m, weights_only=True, map_location=torch.device("gpu"))
     model = model_map[args.model](num_classes=args.num_classes, output_stride=args.output_stride, memory=memory)
     if args.separable_conv and 'plus' in args.model:
         network.convert_to_separable_conv(model.classifier)
     # utils.set_bn_momentum(model.backbone, momentum=0.01)
     save_path = './snapshots_p2v_v3_1/p2v_40000.pth'
-    model.load_state_dict(torch.load(save_path))
+    model.load_state_dict(torch.load(save_path, weights_only=True, map_location=torch.device("gpu")))
     print('load success')
 
     model.eval()
