@@ -6,7 +6,7 @@
 dataset/potsdam
 dataset/mpia
 results/
-snapshots_p2v*
+snapshots*
 
 *.DS_STORE
 *.zip
