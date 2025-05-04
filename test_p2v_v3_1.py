@@ -22,10 +22,12 @@ MODEL = 'DeepLab'
 BATCH_SIZE = 2
 ITER_SIZE = 1
 NUM_WORKERS = 0
-VAL_IMAGE_DIRECTORY_TARGET = "./dataset/vaihingen/val_img_512"
-VAL_LABEL_DIRECTORY_TARGET = "./dataset/vaihingen/val_lab_512"
-IGNORE_LABEL = 255
-NUM_CLASSES = 6
+VAL_IMAGE_DIRECTORY_TARGET = "./dataset/mpia/val_image_512"
+VAL_LABEL_DIRECTORY_TARGET = "./dataset/mpia/val_label_512"
+# VAL_IMAGE_DIRECTORY_TARGET = "./dataset/vaihingen/val_img_512"
+# VAL_LABEL_DIRECTORY_TARGET = "./dataset/vaihingen/val_lab_512"
+# IGNORE_LABEL = 255
+NUM_CLASSES = 2 # 6
 
 def get_arguments():
     """Parse all the arguments provided from the CLI.
@@ -76,13 +78,13 @@ def main():
         'deeplabv3_mobilenet': network.deeplabv3_mobilenet,
         'deeplabv3plus_mobilenet': network.deeplabv3plus_mobilenet
     }
-    save_path_m = './snapshots/p2v_best_m.pth'
+    save_path_m = './snapshots_p2v_v3_1/p2v_m.pth'
     memory = torch.load(save_path_m)
     model = model_map[args.model](num_classes=args.num_classes, output_stride=args.output_stride, memory=memory)
     if args.separable_conv and 'plus' in args.model:
         network.convert_to_separable_conv(model.classifier)
     # utils.set_bn_momentum(model.backbone, momentum=0.01)
-    save_path = './snapshots/p2v_best.pth'
+    save_path = './snapshots_p2v_v3_1/p2v.pth'
     model.load_state_dict(torch.load(save_path))
     print('load success')
 
