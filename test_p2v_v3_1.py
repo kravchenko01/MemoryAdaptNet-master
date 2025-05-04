@@ -53,8 +53,8 @@ def get_arguments():
                         help="Path to the directory containing the source dataset.")
     parser.add_argument("--val-target-label-dir", type=str, default=VAL_LABEL_DIRECTORY_TARGET,
                         help="Path to the directory containing the source dataset.")
-    parser.add_argument("--ignore-label", type=int, default=IGNORE_LABEL,
-                        help="The index of the label to ignore during the training.")
+    # parser.add_argument("--ignore-label", type=int, default=IGNORE_LABEL,
+    #                     help="The index of the label to ignore during the training.")
     parser.add_argument("--num-classes", type=int, default=NUM_CLASSES,
                         help="Number of classes to predict (including background).")
     parser.add_argument("--gpu", type=int, default=0,
