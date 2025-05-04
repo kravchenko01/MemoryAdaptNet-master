@@ -64,6 +64,27 @@ def get_arguments():
 
 args = get_arguments()
 
+def validate(args, model, validloader, metrics1, metrics2):
+    """Do validation and return specified samples"""
+    metrics1.reset()
+    metrics2.reset()
+    with torch.no_grad():
+        for i, data in enumerate(validloader, start=0):
+            images, labels = data[0], data[1]
+            images = Variable(images).cuda(args.gpu)
+            labels = Variable(labels).cuda(args.gpu)
+
+            m,outputs1, outputs2 = model(images, 'TEST', labels, 0, 0)
+            preds1 = (outputs1 + outputs2).detach().max(dim=1)[1].cpu().numpy()
+            preds2 = outputs2.detach().max(dim=1)[1].cpu().numpy()
+            targets = labels.cpu().numpy()
+            metrics1.update(targets, preds1)
+            metrics2.update(targets, preds2)
+
+        score1 = metrics1.get_results()
+        score2 = metrics2.get_results()
+    return score1, score2
+
 def main():
     """Create the model and start the training."""
 
@@ -130,5 +151,17 @@ def main():
 
         score2 = metrics2.get_results()
         print(score2)
+
+
+    metrics1 = StreamSegMetrics(args.num_classes)
+    metrics2 = StreamSegMetrics(args.num_classes)
+    
+    print("validation...")
+    val_score1, val_score2 = validate(
+        args, model=model, validloader=val_targetloader, metrics1=metrics1, metrics2=metrics2)
+    print(metrics2.to_str(val_score2))
+    print(metrics1.to_str(val_score1))
+
+
 if __name__ == '__main__':
     main()
