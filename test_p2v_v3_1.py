@@ -97,7 +97,7 @@ def main():
         args.val_target_label_dir,
     )
     val_targetloader = torch.utils.data.DataLoader(val_target_dataset, batch_size=args.batch_size, shuffle=True,
-                                           num_workers=args.num_workers, pin_memory=True)
+                                           num_workers=args.num_workers, pin_memory=True, drop_last=True)
 
     # implement model.optim_parameters(args) to handle different models' lr setting
     metrics2 = StreamSegMetrics(args.num_classes)
