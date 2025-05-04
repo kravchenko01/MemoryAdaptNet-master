@@ -44,7 +44,10 @@ class StreamSegMetrics(_StreamMetrics):
                 else:
                     for i in range(len(v)):
                         string += "F1_%s: %f\n" % (i, v[i])
-                        # print('{0}'.format(i))
+            else:
+                for k, v in results['Class IoU'].items():
+                    string += "\tclass %d: %f\n"%(k, v)
+        # print('{0}'.format(i))
         #string+='Class IoU:\n'
         #for k, v in results['Class IoU'].items():
         #    string += "\tclass %d: %f\n"%(k, v)
